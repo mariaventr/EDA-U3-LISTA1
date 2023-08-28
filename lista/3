@@ -104,47 +104,45 @@ class ListaConCursor:
 lista = ListaConCursor()
 
 # Insertar elementos en la lista
-lista.Insertar(10)  # Insertar el elemento 10
-lista.Insertar(20)  # Insertar el elemento 20
-lista.Insertar(30)  # Insertar el elemento 30
+lista.Insertar(10)
+lista.Insertar(20)
+lista.Insertar(30)
+lista.Insertar(40)
 
-# Mover el cursor al principio de la lista
+# Mover el cursor al inicio de la lista
 lista.Inicio()
 
-# Recuperar y mostrar el elemento en la posición actual del cursor
+# Recuperar y imprimir el elemento actual
 print("Elemento actual:", lista.Recuperar())  # Debería imprimir "Elemento actual: 10"
 
-# Mover el cursor al siguiente nodo
+# Avanzar el cursor al siguiente elemento
 lista.Avanzar()
 
-# Recuperar y mostrar el elemento en la posición actual del cursor
+# Recuperar y imprimir el elemento actual
 print("Elemento actual:", lista.Recuperar())  # Debería imprimir "Elemento actual: 20"
 
-# Mover el cursor al siguiente nodo
-lista.Avanzar()
+# Retroceder el cursor al elemento anterior
+lista.Retroceder()
 
-# Recuperar y mostrar el elemento en la posición actual del cursor
-print("Elemento actual:", lista.Recuperar())  # Debería imprimir "Elemento actual: 30"
+# Recuperar y imprimir el elemento actual
+print("Elemento actual:", lista.Recuperar())  # Debería imprimir "Elemento actual: 10"
 
-# Mover el cursor al siguiente nodo (ya está en el último nodo)
-lista.Avanzar()
+# Mover el cursor al final de la lista
+lista.Fin()
 
-# Suprimir el elemento en la posición actual del cursor (eliminar 30)
-lista.Suprimir()
+# Recuperar y imprimir el elemento actual
+print("Elemento actual:", lista.Recuperar())  # Debería imprimir "Elemento actual: 40"
 
-# Mover el cursor al principio de la lista
+# Insertar un elemento en la posición del cursor
+lista.Insertar(50)
+
+# Recorrer la lista e imprimir todos los elementos
+print("Lista completa:")
 lista.Inicio()
-
-# Recorrer la lista y mostrar todos los elementos
-print("Recorriendo la lista:")
 while lista.Recuperar() is not None:
     print(lista.Recuperar())
     lista.Avanzar()
 
-# Debería imprimir:
-# Recorriendo la lista:
-# 10
-# 20
 
     
         
