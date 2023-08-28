@@ -1,121 +1,146 @@
-import numpy as np
+class Nodo:
+    def __init__(self, dato):
+        self.dato = dato
+        self.siguiente = None
 
-class ListaContenido:
+class ListaConCursor:
     def __init__(self):
-        self.__lista = np.array([])
+        self.cabeza = None
+        self.cursor = None
 
-    def insertar(self, elemento, posicion):
+    def Insertar(self, X):
         """
-        Inserta el elemento en la posición especificada en la lista.
+        Inserta el elemento X en la posición del cursor y mueve el cursor al nuevo nodo.
         """
-        if posicion >= 0 and posicion <= len(self.__lista):
-            self.__lista = np.insert(self.__lista, posicion, elemento)
-        else:
-            print("Posición fuera de rango.")
+        nuevo_nodo = Nodo(X)
 
-    def suprimir(self, posicion):
-        """
-        Elimina el elemento en la posición especificada de la lista.
-        """
-        if posicion >= 0 and posicion < len(self.__lista):
-            self.__lista = np.delete(self.__lista, posicion)
+        if self.cabeza is None:
+            self.cabeza = nuevo_nodo
+            self.cursor = nuevo_nodo
         else:
-            print("Posición fuera de rango.")
+            nuevo_nodo.siguiente = self.cursor.siguiente
+            self.cursor.siguiente = nuevo_nodo
+            self.cursor = nuevo_nodo
 
-    def recuperar(self, posicion):
+    def Suprimir(self):
         """
-        Recupera el elemento en la posición especificada de la lista.
+        Elimina el elemento en la posición del cursor y mueve el cursor al siguiente nodo.
         """
-        if posicion >= 0 and posicion < len(self.__lista):
-            return self.__lista[posicion]
+        if self.cursor is None:
+            print("El cursor está fuera de la lista.")
+        elif self.cabeza == self.cursor:
+            self.cabeza = self.cabeza.siguiente
+            self.cursor = self.cabeza
         else:
-            print("Posición fuera de rango.")
+            actual = self.cabeza
+            while actual is not None and actual.siguiente != self.cursor:
+                actual = actual.siguiente
+
+            if actual is not None:
+                actual.siguiente = self.cursor.siguiente
+                self.cursor = actual
+
+    def Recuperar(self):
+        """
+        Devuelve el elemento en la posición del cursor.
+        """
+        if self.cursor is None:
+            print("El cursor está fuera de la lista.")
             return None
+        else:
+            return self.cursor.dato
 
-    def buscar(self, elemento):
+    def Avanzar(self):
         """
-        Busca el elemento en la lista y devuelve su posición si se encuentra, o -1 si no se encuentra.
+        Mueve el cursor al siguiente nodo en la lista.
         """
-        for i, e in enumerate(self.__lista):
-            if e == elemento:
-                return i
-        return -1
+        if self.cursor is None:
+            print("El cursor está fuera de la lista.")
+        elif self.cursor.siguiente is not None:
+            self.cursor = self.cursor.siguiente
+        else:
+            print("El cursor está en el último nodo.")
 
-    def primer_elemento(self):
+    def Retroceder(self):
         """
-        Devuelve el primer elemento de la lista.
+        Mueve el cursor al nodo anterior en la lista.
         """
-        if len(self.__lista) > 0:
-            return self.__lista[0]
+        if self.cursor is None:
+            print("El cursor está fuera de la lista.")
+        elif self.cabeza == self.cursor:
+            print("El cursor está en el primer nodo.")
+        else:
+            actual = self.cabeza
+            anterior = None
+
+            while actual is not None and actual != self.cursor:
+                anterior = actual
+                actual = actual.siguiente
+
+            if actual is not None:
+                self.cursor = anterior
+
+    def Inicio(self):
+        """
+        Mueve el cursor al primer nodo de la lista.
+        """
+        if self.cabeza is not None:
+            self.cursor = self.cabeza
         else:
             print("La lista está vacía.")
-            return None
 
-    def ultimo_elemento(self):
+    def Fin(self):
         """
-        Devuelve el último elemento de la lista.
+        Mueve el cursor al último nodo de la lista.
         """
-        if len(self.__lista) > 0:
-            return self.__lista[-1]
+        if self.cabeza is not None:
+            actual = self.cabeza
+            while actual.siguiente is not None:
+                actual = actual.siguiente
+            self.cursor = actual
         else:
             print("La lista está vacía.")
-            return None
+# Crear una lista encadenada con cursor
+lista = ListaConCursor()
 
-    def siguiente(self, posicion):
-        """
-        Devuelve la posición del elemento siguiente a la posición especificada en la lista.
-        """
-        if posicion >= 0 and posicion < len(self.__lista) - 1:
-            return posicion + 1
-        else:
-            print("Posición fuera de rango para la posición siguiente.")
-            return None
+# Insertar elementos en la lista
+lista.Insertar(10)
+lista.Insertar(20)
+lista.Insertar(30)
+lista.Insertar(40)
 
-    def anterior(self, posicion):
-        """
-        Devuelve la posición del elemento anterior a la posición especificada en la lista.
-        """
-        if posicion > 0 and posicion < len(self.__lista):
-            return posicion - 1
-        else:
-            print("Posición fuera de rango para la posición anterior.")
-            return None
+# Mover el cursor al inicio de la lista
+lista.Inicio()
 
-    def recorrer(self):
-        """
-        Imprime todos los elementos de la lista.
-        """
-        for elemento in self.__lista:
-            print(elemento)
+# Recuperar y imprimir el elemento actual
+print("Elemento actual:", lista.Recuperar())  # Debería imprimir "Elemento actual: 10"
 
-# Ejemplo de uso
-mi_lista = ListaContenido()
+# Avanzar el cursor al siguiente elemento
+lista.Avanzar()
 
-mi_lista.insertar(10, 0)
-mi_lista.insertar(20, 1)
-mi_lista.insertar(30, 2)
+# Recuperar y imprimir el elemento actual
+print("Elemento actual:", lista.Recuperar())  # Debería imprimir "Elemento actual: 20"
 
-print("Elementos de la lista:")
-mi_lista.recorrer()
+# Retroceder el cursor al elemento anterior
+lista.Retroceder()
 
-mi_lista.suprimir(1)
-print("Elementos de la lista después de suprimir:")
-mi_lista.recorrer()
+# Recuperar y imprimir el elemento actual
+print("Elemento actual:", lista.Recuperar())  # Debería imprimir "Elemento actual: 10"
 
-elemento = mi_lista.recuperar(1)
-print(f"Elemento en la posición 1: {elemento}")
+# Mover el cursor al final de la lista
+lista.Fin()
 
-posicion = mi_lista.buscar(10)
-if posicion != -1:
-    print(f"El elemento 10 se encuentra en la posición {posicion}")
-else:
-    print("El elemento 10 no se encuentra en la lista")
+# Recuperar y imprimir el elemento actual
+print("Elemento actual:", lista.Recuperar())  # Debería imprimir "Elemento actual: 40"
 
-primer_elemento = mi_lista.primer_elemento()
-ultimo_elemento = mi_lista.ultimo_elemento()
-print(f"Primer elemento: {primer_elemento}, Último elemento: {ultimo_elemento}")
+# Insertar un elemento en la posición del cursor
+lista.Insertar(50)
 
-posicion = 0
-posicion_siguiente = mi_lista.siguiente(posicion)
-posicion_anterior = mi_lista.anterior(posicion)
-print(f"Posición actual: {posicion}, Posición siguiente: {posicion_siguiente}, Posición anterior: {posicion_anterior}")
+# Recorrer la lista e imprimir todos los elementos
+print("Lista completa:")
+lista.Inicio()
+while lista.Recuperar() is not None:
+    print(lista.Recuperar())
+    lista.Avanzar()
+    
+        
